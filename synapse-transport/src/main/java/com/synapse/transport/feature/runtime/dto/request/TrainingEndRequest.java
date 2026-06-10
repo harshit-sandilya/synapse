@@ -1,0 +1,22 @@
+package com.synapse.transport.feature.runtime.dto.request;
+
+import java.util.UUID;
+import com.synapse.transport.common.enums.ModelStatus;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class TrainingEndRequest {
+    private UUID workspaceId;
+    private UUID experimentId;
+    private ModelStatus status;
+    private String metricsStorageKey;
+    private String checkpointStorageKey;
+    private String trainingError;
+}
