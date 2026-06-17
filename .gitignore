@@ -4,6 +4,6 @@ __pycache__
 .vscode
 .DS_Store
 
-data/
-experiments/
+sj_exp/data/
+sj_exp/experiments/
 test/state.json

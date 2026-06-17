@@ -1,20 +1,20 @@
-from common.logging.logger import get_logger
 from common.enums.model_status import ModelStatus
+from common.logging.logger import get_logger
 from common.models.queue.model_training_job import ModelTrainingJob
-from common.models.transport.training_start_request import TrainingStartRequest
 from common.models.transport.training_end_request import TrainingEndRequest
-from feature.training.service.training_context_builder import TrainingContextBuilder
-from feature.training.service.trainer import Trainer
+from common.models.transport.training_start_request import TrainingStartRequest
+from config.runtime_properties import runtime_properties
+from feature.training.service.checkpoint_service import CheckpointService
 from feature.training.service.evaluator import Evaluator
 from feature.training.service.metrics_writer import MetricsWriter
 from feature.training.service.telemetry_publisher import TelemetryPublisher
-from feature.training.service.checkpoint_service import CheckpointService
-from infrastructure.transport.transport_runtime_client import HttpTransportClient
+from feature.training.service.trainer import Trainer
+from feature.training.service.training_context_builder import TrainingContextBuilder
+from infrastructure.event.redis_event_publisher import RedisEventPublisher
 from infrastructure.queue.redis_action_queue import RedisActionQueue
 from infrastructure.storage.minio_storage import MinioObjectStorage
 from infrastructure.storage.storage_cache import StorageCache
-from infrastructure.event.redis_event_publisher import RedisEventPublisher
-from config.runtime_properties import runtime_properties
+from infrastructure.transport.transport_runtime_client import HttpTransportClient
 
 logger = get_logger(__name__)
 
@@ -48,7 +48,7 @@ class TrainingEngine:
         self.evaluator = Evaluator()
 
         try:
-            logger.info(f"Starting training " f"experiment={job.experiment_id}")
+            logger.info(f"Starting training experiment={job.experiment_id}")
             context = self.context_builder.build(job)
 
             await self.transport.notify_training_started(
@@ -92,10 +92,9 @@ class TrainingEngine:
                 )
             )
 
-            logger.info(f"Training completed " f"experiment={job.experiment_id}")
+            logger.info(f"Training completed experiment={job.experiment_id}")
 
         except Exception as ex:
-
             logger.exception("Training failed")
 
             await self.transport.notify_training_ended(

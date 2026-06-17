@@ -1,138 +1,137 @@
 services:
-  postgres:
-    image: postgres:16
-    container_name: synapse-postgres
-    restart: unless-stopped
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_dev_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: synapse
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: secret
-    networks:
-      - synapse
-  
-  redis:
-    image: redis:8
-    container_name: synapse-redis
-    restart: unless-stopped
-    ports: 
-      - "6379:6379"
-    networks:
-      - synapse
-  
-  redis-insight:
-    image: redis/redisinsight:latest 
-    container_name: synapse-redis-insight
-    restart: unless-stopped
-    ports:
-      - "5540:5540"
-    depends_on:
-      - redis
-    volumes:
-      - redis_insight_data:/data
-    networks:
-      - synapse
-  
-  minio: 
-    image: minio/minio:latest
-    container_name: synapse-minio
-    restart: unless-stopped
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    volumes:
-      - minio_dev_data:/data
-    environment:
-      MINIO_ROOT_USER: synapse
-      MINIO_ROOT_PASSWORD: synapsepassword
-    command: server /data --console-address ":9001"
-    networks:
-      - synapse
-  
-  cloudbeaver:
-    image: dbeaver/cloudbeaver:latest
-    container_name: synapse-cloudbeaver
-    restart: unless-stopped
-    ports:
-      - "8978:8978"
-    depends_on:
-      - postgres
-    volumes:
-      - cloudbeaver_data:/opt/cloudbeaver/workspace
-    networks:
-      - synapse
+    postgres:
+        image: postgres:16
+        container_name: synapse-postgres
+        restart: unless-stopped
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_dev_data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_DB: synapse
+            POSTGRES_USER: myuser
+            POSTGRES_PASSWORD: secret
+        networks:
+            - synapse
 
-  transport:
-    build: ./synapse-transport
-    container_name: synapse-transport
-    restart: unless-stopped
-    depends_on:
-      - postgres
-      - redis
-      - minio
-    ports:
-      - "8080:8080"
-    environment:
-      SPRING_PROFILES_ACTIVE: dev
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/synapse
-      SPRING_DATASOURCE_USERNAME: myuser
-      SPRING_DATASOURCE_PASSWORD: secret
-      SPRING_DATA_REDIS_HOST: redis 
-      SPRING_DATA_REDIS_PORT: 6379
-      MINIO_ENDPOINT: http://minio:9000 
-      MINIO_ACCESS_KEY: synapse 
-      MINIO_SECRET_KEY: synapsepassword 
-      MINIO_BUCKET: synapse-dev
-      ACTION_QUEUE_PREFIX: synapse:jobs
-      ALLOWED_ORIGINS: http://localhost:3000
-    networks:
-      - synapse
-  
-  runtime:
-    build: ./synapse-runtime
-    container_name: synapse-runtime
-    restart: unless-stopped
-    depends_on:
-      - redis
-      - minio
-      - transport
-    ports:
-      - "8000:8000"
-    environment:
-      TRANSPORT_URL: http://transport:8080
-      REDIS_HOST: redis
-      REDIS_PORT: 6379
-      MINIO_ENDPOINT: http://minio:9000
-      MINIO_ACCESS_KEY: synapse
-      MINIO_SECRET_KEY: synapsepassword
-      MINIO_BUCKET: synapse-dev
-      ACTION_QUEUE_PREFIX: synapse:jobs
-      RUNTIME_CACHE_DIR: /tmp/synapse
-    networks:
-      - synapse
-    
-  ui:
-    build: ./synapse-ui
-    container_name: synapse-ui
-    restart: unless-stopped
-    depends_on:
-      - runtime
-      - transport
-    ports:
-      - "3000:3000"
-    networks:
-      - synapse
+    redis:
+        image: redis:8
+        container_name: synapse-redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        networks:
+            - synapse
 
+    redis-insight:
+        image: redis/redisinsight:latest
+        container_name: synapse-redis-insight
+        restart: unless-stopped
+        ports:
+            - "5540:5540"
+        depends_on:
+            - redis
+        volumes:
+            - redis_insight_data:/data
+        networks:
+            - synapse
+
+    minio:
+        image: minio/minio:latest
+        container_name: synapse-minio
+        restart: unless-stopped
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        volumes:
+            - minio_dev_data:/data
+        environment:
+            MINIO_ROOT_USER: synapse
+            MINIO_ROOT_PASSWORD: synapsepassword
+        command: server /data --console-address ":9001"
+        networks:
+            - synapse
+
+    cloudbeaver:
+        image: dbeaver/cloudbeaver:latest
+        container_name: synapse-cloudbeaver
+        restart: unless-stopped
+        ports:
+            - "8978:8978"
+        depends_on:
+            - postgres
+        volumes:
+            - cloudbeaver_data:/opt/cloudbeaver/workspace
+        networks:
+            - synapse
+
+    transport:
+        build: ./synapse-transport
+        container_name: synapse-transport
+        restart: unless-stopped
+        depends_on:
+            - postgres
+            - redis
+            - minio
+        ports:
+            - "8080:8080"
+        environment:
+            SPRING_PROFILES_ACTIVE: dev
+            SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/synapse
+            SPRING_DATASOURCE_USERNAME: myuser
+            SPRING_DATASOURCE_PASSWORD: secret
+            SPRING_DATA_REDIS_HOST: redis
+            SPRING_DATA_REDIS_PORT: 6379
+            MINIO_ENDPOINT: http://minio:9000
+            MINIO_ACCESS_KEY: synapse
+            MINIO_SECRET_KEY: synapsepassword
+            MINIO_BUCKET: synapse-dev
+            ACTION_QUEUE_PREFIX: synapse:jobs
+            ALLOWED_ORIGINS: http://localhost:3000, http://ui:3000
+        networks:
+            - synapse
+
+    runtime:
+        build: ./synapse-runtime
+        container_name: synapse-runtime
+        restart: unless-stopped
+        depends_on:
+            - redis
+            - minio
+            - transport
+        ports:
+            - "8000:8000"
+        environment:
+            TRANSPORT_URL: http://transport:8080
+            REDIS_HOST: redis
+            REDIS_PORT: 6379
+            MINIO_ENDPOINT: http://minio:9000
+            MINIO_ACCESS_KEY: synapse
+            MINIO_SECRET_KEY: synapsepassword
+            MINIO_BUCKET: synapse-dev
+            ACTION_QUEUE_PREFIX: synapse:jobs
+            RUNTIME_CACHE_DIR: /tmp/synapse
+        networks:
+            - synapse
+
+    ui:
+        build: ./synapse-ui
+        container_name: synapse-ui
+        restart: unless-stopped
+        depends_on:
+            - runtime
+            - transport
+        ports:
+            - "3000:3000"
+        networks:
+            - synapse
 
 volumes:
-  postgres_dev_data:
-  minio_dev_data:
-  redis_insight_data:
-  cloudbeaver_data:
+    postgres_dev_data:
+    minio_dev_data:
+    redis_insight_data:
+    cloudbeaver_data:
 
 networks:
-  synapse:
-    driver: bridge
+    synapse:
+        driver: bridge

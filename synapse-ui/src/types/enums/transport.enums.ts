@@ -1,0 +1,72 @@
+export enum ArtifactType {
+  DATASET_CONFIG = "DATASET_CONFIG",
+  DATASET_CACHE = "DATASET_CACHE",
+  MODEL_CONFIG = "MODEL_CONFIG",
+  MODEL_IR = "MODEL_IR",
+  TRAINING_METRICS = "TRAINING_METRICS",
+  CHECKPOINT = "CHECKPOINT",
+  INFERENCE_RESULT = "INFERENCE_RESULT",
+}
+
+export enum ConfigStatus {
+  NOT_CONFIGURED = "NOT_CONFIGURED",
+  CONFIGURED = "CONFIGURED",
+  VALIDATING = "VALIDATING",
+  READY = "READY",
+  FAILED = "FAILED",
+}
+
+export enum DatasetProvider {
+  PYTORCH = "PYTORCH",
+}
+
+export enum EncodingScheme {
+  LATENCY = "LATENCY",
+  POISSON = "POISSON",
+}
+
+export enum ExperimentStatus {
+  DRAFT = "DRAFT",
+  READY = "READY",
+  PENDING = "PENDING",
+  RUNNING = "RUNNING",
+  COMPLETED = "COMPLETED",
+  FAILED = "FAILED",
+}
+
+export enum ExperimentTaskType {
+  CLASSIFICATION = "CLASSIFICATION",
+  REGRESSION = "REGRESSION",
+}
+
+export enum InferenceStatus {
+  NOT_CONFIGURED = "NOT_CONFIGURED",
+  CONFIGURED = "CONFIGURED",
+  QUEUED = "QUEUED",
+  DONE = "DONE",
+  FAILED = "FAILED",
+}
+
+export enum LossFunctionType {
+  CROSS_ENTROPY = "CROSS_ENTROPY",
+  NLL_LOSS = "NLL_LOSS",
+  MSE = "MSE",
+  MAE = "MAE",
+  HUBER = "HUBER",
+}
+
+export enum ModelStatus {
+  NOT_CONFIGURED = "NOT_CONFIGURED",
+  CONFIGURED = "CONFIGURED",
+  QUEUED = "QUEUED",
+  TRAINING = "TRAINING",
+  DONE = "DONE",
+  FAILED = "FAILED",
+}
+
+export enum OptimizerType {
+  SGD = "SGD",
+  ADAM = "ADAM",
+  ADAMW = "ADAMW",
+  RMSPROP = "RMSPROP",
+}
