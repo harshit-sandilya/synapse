@@ -82,6 +82,10 @@ class TrainingEngine:
                     eval_result=eval_result,
                 )
 
+            self.telemetry_publisher.shutdown()
+            self.metrics_writer.shutdown()
+            self.checkpoint_service.shutdown()
+
             await self.transport.notify_training_ended(
                 TrainingEndRequest(
                     workspace_id=job.workspace_id,
@@ -96,6 +100,13 @@ class TrainingEngine:
 
         except Exception as ex:
             logger.exception("Training failed")
+
+            try:
+                self.telemetry_publisher.shutdown()
+                self.metrics_writer.shutdown()
+                self.checkpoint_service.shutdown()
+            except Exception:
+                logger.exception("Failed draining async training services")
 
             await self.transport.notify_training_ended(
                 TrainingEndRequest(

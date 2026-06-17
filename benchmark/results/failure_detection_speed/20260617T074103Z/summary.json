@@ -1,0 +1,48 @@
+{
+  "benchmark": "failure_detection_speed",
+  "mean_telemetry_earlier_by_steps": 21.0,
+  "parameters": {
+    "batch_size": 16,
+    "collapse_step": 40,
+    "collapse_threshold": 100.0,
+    "learning_rate": 0.001,
+    "runs": 3,
+    "seed": 42,
+    "steps": 120,
+    "test_samples": 256,
+    "timesteps": 16,
+    "train_samples": 4096
+  },
+  "runs": [
+    {
+      "conventional_failure_step": 84,
+      "run": 1,
+      "seed": 42,
+      "telemetry_earlier_by_steps": 42,
+      "telemetry_failure_step": 42
+    },
+    {
+      "conventional_failure_step": 54,
+      "run": 2,
+      "seed": 43,
+      "telemetry_earlier_by_steps": 12,
+      "telemetry_failure_step": 42
+    },
+    {
+      "conventional_failure_step": 51,
+      "run": 3,
+      "seed": 44,
+      "telemetry_earlier_by_steps": 9,
+      "telemetry_failure_step": 42
+    }
+  ],
+  "std_telemetry_earlier_by_steps": 18.24828759089466,
+  "thresholds": {
+    "conventional_accuracy_decay": 0.7,
+    "conventional_consecutive_steps": 5,
+    "conventional_loss_growth": 1.2,
+    "telemetry_consecutive_steps": 3,
+    "telemetry_dead_threshold": 0.8,
+    "telemetry_firing_threshold": 0.01
+  }
+}

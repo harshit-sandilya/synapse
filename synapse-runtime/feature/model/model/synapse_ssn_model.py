@@ -1,14 +1,11 @@
 import torch
 import torch.nn as nn
-
+from feature.model.dto.telemetry import LayerTelemetry, ModelTelemetry
 from spikingjelly.activation_based import functional
 from spikingjelly.activation_based.neuron import BaseNode
 
-from feature.model.dto.telemetry import LayerTelemetry, ModelTelemetry
-
 
 class SynapseSNNModel(nn.Module):
-
     def __init__(self, encoder, network: nn.ModuleList, timesteps: int):
         super().__init__()
 
@@ -17,7 +14,7 @@ class SynapseSNNModel(nn.Module):
         self.timesteps = timesteps
 
         self.telemetry_layers = []
-        self.output_shape = None
+        self.output_shape: tuple[int, ...] | None = None
 
         for idx, layer in enumerate(network):
             if isinstance(layer, BaseNode):
@@ -59,7 +56,12 @@ class SynapseSNNModel(nn.Module):
             return tensor.mean(dim=(0, *spatial_dims))
         return tensor
 
-    def forward(self, x: torch.Tensor, collect_telemetry: bool = True):
+    def forward(
+        self,
+        x: torch.Tensor,
+        collect_telemetry: bool = True,
+        capture_raw_telemetry: bool = False,
+    ):
         output_sum = None
         telemetry_cache = {}
         if collect_telemetry:
@@ -67,6 +69,8 @@ class SynapseSNNModel(nn.Module):
                 telemetry_cache[layer_meta["index"]] = {
                     "spikes": [],
                     "membrane_potentials": [],
+                    "raw_spikes": [] if capture_raw_telemetry else None,
+                    "raw_membrane_potentials": [] if capture_raw_telemetry else None,
                 }
 
         for _ in range(self.timesteps):
@@ -75,15 +79,27 @@ class SynapseSNNModel(nn.Module):
             for layer_idx, layer in enumerate(self.network):
                 current = layer(current)
                 if collect_telemetry and isinstance(layer, BaseNode):
-                    spikes = self._reduce_activity(current.detach())
-                    membrane = self._reduce_activity(layer.v.detach())
+                    raw_spikes = current.detach()
+                    raw_membrane = layer.v.detach()
+                    spikes = self._reduce_activity(raw_spikes)
+                    membrane = self._reduce_activity(raw_membrane)
                     telemetry_cache[layer_idx]["spikes"].append(spikes)
                     telemetry_cache[layer_idx]["membrane_potentials"].append(membrane)
+
+                    if capture_raw_telemetry:
+                        telemetry_cache[layer_idx]["raw_spikes"].append(raw_spikes)
+                        telemetry_cache[layer_idx]["raw_membrane_potentials"].append(
+                            raw_membrane
+                        )
 
             if output_sum is None:
                 output_sum = current
             else:
                 output_sum += current
+
+        if output_sum is None:
+            raise ValueError("Model produced no output during forward pass")
+
         output = output_sum / self.timesteps
 
         if not collect_telemetry:
@@ -104,6 +120,16 @@ class SynapseSNNModel(nn.Module):
                     ),
                     threshold=layer_meta["threshold"],
                     tau=float(tau) if tau is not None else None,
+                    raw_spikes=(
+                        torch.stack(telemetry_cache[idx]["raw_spikes"])
+                        if capture_raw_telemetry
+                        else None
+                    ),
+                    raw_membrane_potentials=(
+                        torch.stack(telemetry_cache[idx]["raw_membrane_potentials"])
+                        if capture_raw_telemetry
+                        else None
+                    ),
                 )
             )
         telemetry = ModelTelemetry(timestep=self.timesteps, layers=telemetry)

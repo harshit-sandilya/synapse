@@ -1,9 +1,9 @@
+import torch
 from common.models.events.published_telemetry import (
-    PublishedTelemetry,
     PublishedLayerTelemetry,
+    PublishedTelemetry,
 )
 from feature.model.dto.telemetry import ModelTelemetry
-import torch
 
 
 class TelemetryReducer:
@@ -42,6 +42,8 @@ class TelemetryReducer:
         return PublishedTelemetry(
             timestep=telemetry.timestep,
             layers=layers,
+            emitted_at_ms=telemetry.emitted_at_ms,
+            sequence_id=telemetry.sequence_id,
         )
 
     @staticmethod

@@ -1,0 +1,17 @@
+{
+  "benchmark": "storage_reduction",
+  "full_tensor_bytes": 103188938,
+  "hierarchical_bytes": 37249,
+  "parameters": {
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "seed": 42,
+    "steps": 40,
+    "summary_interval": 10,
+    "test_samples": 256,
+    "timesteps": 16,
+    "train_samples": 1024
+  },
+  "reduction_pct": 99.96390213842496,
+  "size_ratio": 2770.2472012671483
+}

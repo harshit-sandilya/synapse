@@ -21,3 +21,5 @@ class PublishedLayerTelemetry(BaseModel):
 class PublishedTelemetry(BaseModel):
     timestep: int
     layers: list[PublishedLayerTelemetry]
+    emitted_at_ms: float | None = None
+    sequence_id: int | None = None

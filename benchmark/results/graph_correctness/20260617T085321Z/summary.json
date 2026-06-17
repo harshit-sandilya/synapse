@@ -1,0 +1,3911 @@
+{
+  "average_generation_time_ms": 5.02385909619209,
+  "benchmark": "graph_correctness",
+  "case_breakdown": {
+    "encoder": {
+      "latency:linear": {
+        "cases": 49,
+        "success": 0
+      },
+      "latency:log": {
+        "cases": 49,
+        "success": 0
+      },
+      "poisson": {
+        "cases": 49,
+        "success": 42
+      }
+    },
+    "layer": {
+      "AvgPool1D": {
+        "cases": 21,
+        "success": 6
+      },
+      "AvgPool2D": {
+        "cases": 21,
+        "success": 6
+      },
+      "AvgPool3D": {
+        "cases": 21,
+        "success": 6
+      },
+      "BatchNorm1D": {
+        "cases": 63,
+        "success": 18
+      },
+      "BatchNorm2D": {
+        "cases": 42,
+        "success": 12
+      },
+      "BatchNorm3D": {
+        "cases": 42,
+        "success": 12
+      },
+      "Conv1D": {
+        "cases": 42,
+        "success": 12
+      },
+      "Conv2D": {
+        "cases": 42,
+        "success": 12
+      },
+      "Conv3D": {
+        "cases": 42,
+        "success": 12
+      },
+      "Dropout": {
+        "cases": 147,
+        "success": 42
+      },
+      "Flatten": {
+        "cases": 147,
+        "success": 42
+      },
+      "Linear": {
+        "cases": 147,
+        "success": 42
+      },
+      "MaxPool1D": {
+        "cases": 21,
+        "success": 6
+      },
+      "MaxPool2D": {
+        "cases": 21,
+        "success": 6
+      },
+      "MaxPool3D": {
+        "cases": 21,
+        "success": 6
+      }
+    },
+    "neuron": {
+      "EIF": {
+        "cases": 21,
+        "success": 7
+      },
+      "IF": {
+        "cases": 21,
+        "success": 7
+      },
+      "KLIF": {
+        "cases": 21,
+        "success": 7
+      },
+      "LIAF": {
+        "cases": 21,
+        "success": 0
+      },
+      "LIF": {
+        "cases": 21,
+        "success": 7
+      },
+      "PLIF": {
+        "cases": 21,
+        "success": 7
+      },
+      "QIF": {
+        "cases": 21,
+        "success": 7
+      }
+    },
+    "structure": {
+      "conv1d_avgpool": {
+        "cases": 21,
+        "success": 6
+      },
+      "conv1d_maxpool": {
+        "cases": 21,
+        "success": 6
+      },
+      "conv2d_avgpool": {
+        "cases": 21,
+        "success": 6
+      },
+      "conv2d_maxpool": {
+        "cases": 21,
+        "success": 6
+      },
+      "conv3d_avgpool": {
+        "cases": 21,
+        "success": 6
+      },
+      "conv3d_maxpool": {
+        "cases": 21,
+        "success": 6
+      },
+      "dense_batchnorm1d": {
+        "cases": 21,
+        "success": 6
+      }
+    }
+  },
+  "coverage": {
+    "encoder_types_tested": [
+      "latency",
+      "poisson"
+    ],
+    "encoder_variants_tested": [
+      "latency:linear",
+      "latency:log",
+      "poisson"
+    ],
+    "layers_tested": [
+      "AvgPool1D",
+      "AvgPool2D",
+      "AvgPool3D",
+      "BatchNorm1D",
+      "BatchNorm2D",
+      "BatchNorm3D",
+      "Conv1D",
+      "Conv2D",
+      "Conv3D",
+      "Dropout",
+      "Flatten",
+      "Linear",
+      "MaxPool1D",
+      "MaxPool2D",
+      "MaxPool3D"
+    ],
+    "missing_encoder_types": [],
+    "missing_layers": [],
+    "missing_neurons": [],
+    "neurons_tested": [
+      "EIF",
+      "IF",
+      "KLIF",
+      "LIAF",
+      "LIF",
+      "PLIF",
+      "QIF"
+    ]
+  },
+  "failures": [
+    {
+      "case_id": "dense_batchnorm1d__poisson__LIAF",
+      "case_index": 21,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__poisson__LIAF",
+      "case_index": 22,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__poisson__LIAF",
+      "case_index": 23,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__poisson__LIAF",
+      "case_index": 24,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__poisson__LIAF",
+      "case_index": 25,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__poisson__LIAF",
+      "case_index": 26,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__poisson__LIAF",
+      "case_index": 27,
+      "encoder": "poisson",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "type": "poisson"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__EIF",
+      "case_index": 49,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__latency:linear__EIF",
+      "case_index": 50,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__latency:linear__EIF",
+      "case_index": 51,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__latency:linear__EIF",
+      "case_index": 52,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__latency:linear__EIF",
+      "case_index": 53,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__latency:linear__EIF",
+      "case_index": 54,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__latency:linear__EIF",
+      "case_index": 55,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "delta_T": 1.2,
+              "detach_reset": true,
+              "tau": 2.5,
+              "theta_rh": 1.0,
+              "type": "EIF",
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "EIF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__IF",
+      "case_index": 56,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__latency:linear__IF",
+      "case_index": 57,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__latency:linear__IF",
+      "case_index": 58,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__latency:linear__IF",
+      "case_index": 59,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__latency:linear__IF",
+      "case_index": 60,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__latency:linear__IF",
+      "case_index": 61,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__latency:linear__IF",
+      "case_index": 62,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "type": "IF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "IF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__KLIF",
+      "case_index": 63,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__latency:linear__KLIF",
+      "case_index": 64,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__latency:linear__KLIF",
+      "case_index": 65,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__latency:linear__KLIF",
+      "case_index": 66,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__latency:linear__KLIF",
+      "case_index": 67,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__latency:linear__KLIF",
+      "case_index": 68,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__latency:linear__KLIF",
+      "case_index": 69,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "scale_reset": true,
+              "tau": 2.5,
+              "type": "KLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "KLIF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__LIAF",
+      "case_index": 70,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__latency:linear__LIAF",
+      "case_index": 71,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__latency:linear__LIAF",
+      "case_index": 72,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__latency:linear__LIAF",
+      "case_index": 73,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__latency:linear__LIAF",
+      "case_index": 74,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__latency:linear__LIAF",
+      "case_index": 75,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__latency:linear__LIAF",
+      "case_index": 76,
+      "encoder": "latency:linear",
+      "error": "'LIAFNode' object has no attribute 'single_step_cupy_fp32_inference'",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "detach_reset": true,
+              "tau": 2.5,
+              "threshold_related": true,
+              "type": "LIAF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIAF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__LIF",
+      "case_index": 77,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__latency:linear__LIF",
+      "case_index": 78,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__latency:linear__LIF",
+      "case_index": 79,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__latency:linear__LIF",
+      "case_index": 80,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__latency:linear__LIF",
+      "case_index": 81,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__latency:linear__LIF",
+      "case_index": 82,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__latency:linear__LIF",
+      "case_index": 83,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "LIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "LIF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__PLIF",
+      "case_index": 84,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "dense_batchnorm1d"
+    },
+    {
+      "case_id": "conv1d_maxpool__latency:linear__PLIF",
+      "case_index": 85,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "MaxPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "conv1d_maxpool"
+    },
+    {
+      "case_id": "conv1d_avgpool__latency:linear__PLIF",
+      "case_index": 86,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv1D",
+        "BatchNorm1D",
+        "AvgPool1D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv1D"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool1D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "conv1d_avgpool"
+    },
+    {
+      "case_id": "conv2d_maxpool__latency:linear__PLIF",
+      "case_index": 87,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "MaxPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "conv2d_maxpool"
+    },
+    {
+      "case_id": "conv2d_avgpool__latency:linear__PLIF",
+      "case_index": 88,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv2D",
+        "BatchNorm2D",
+        "AvgPool2D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 8,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv2D"
+          },
+          {
+            "type": "BatchNorm2D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool2D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "conv2d_avgpool"
+    },
+    {
+      "case_id": "conv3d_maxpool__latency:linear__PLIF",
+      "case_index": 89,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "MaxPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "MaxPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "conv3d_maxpool"
+    },
+    {
+      "case_id": "conv3d_avgpool__latency:linear__PLIF",
+      "case_index": 90,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Conv3D",
+        "BatchNorm3D",
+        "AvgPool3D",
+        "Flatten",
+        "Linear",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "bias": true,
+            "kernel_size": 3,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_channels": 4,
+            "padding": 1,
+            "stride": 1,
+            "type": "Conv3D"
+          },
+          {
+            "type": "BatchNorm3D"
+          },
+          {
+            "kernel_size": 2,
+            "stride": 2,
+            "type": "AvgPool3D"
+          },
+          {
+            "p": 0.1,
+            "type": "Dropout"
+          },
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "decay_input": true,
+              "detach_reset": true,
+              "init_tau": 2.5,
+              "type": "PLIF",
+              "v_reset": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "PLIF",
+      "structure": "conv3d_avgpool"
+    },
+    {
+      "case_id": "dense_batchnorm1d__latency:linear__QIF",
+      "case_index": 91,
+      "encoder": "latency:linear",
+      "error": "Class values must be non-negative.",
+      "layers": [
+        "Flatten",
+        "Linear",
+        "BatchNorm1D",
+        "Dropout"
+      ],
+      "model_ir": {
+        "encoder": {
+          "T": 8,
+          "function_type": "linear",
+          "type": "latency"
+        },
+        "layers": [
+          {
+            "type": "Flatten"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "a0": 1.0,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "QIF",
+              "v_c": 1.0,
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 128,
+            "type": "Linear"
+          },
+          {
+            "type": "BatchNorm1D"
+          },
+          {
+            "p": 0.2,
+            "type": "Dropout"
+          },
+          {
+            "bias": true,
+            "neuron": {
+              "a0": 1.0,
+              "detach_reset": true,
+              "tau": 2.5,
+              "type": "QIF",
+              "v_c": 1.0,
+              "v_reset": 0.0,
+              "v_rest": 0.0,
+              "v_threshold": 1.0
+            },
+            "out_features": 10,
+            "type": "Linear"
+          }
+        ],
+        "simulation": {
+          "timesteps": 8
+        },
+        "surrogate": {
+          "alpha": 2.0,
+          "type": "atan"
+        }
+      },
+      "neuron": "QIF",
+      "structure": "dense_batchnorm1d"
+    }
+  ],
+  "parameters": {
+    "batch_size": 8,
+    "graphs": 0,
+    "learning_rate": 0.001,
+    "seed": 42,
+    "timesteps": 8
+  },
+  "stage_counts": {
+    "build_ok": 42,
+    "parse_ok": 147,
+    "sanity_ok": 42,
+    "success": 42,
+    "train_ok": 42,
+    "validate_ok": 147
+  },
+  "success_rate_pct": 28.57142857142857,
+  "total_cases": 147
+}

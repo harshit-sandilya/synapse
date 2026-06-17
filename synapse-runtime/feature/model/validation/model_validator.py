@@ -1,9 +1,10 @@
 import inspect
+
 from feature.model.dto.model_ir import ModelIR
 from feature.model.registry.encoder_registry import ENCODER_REGISTRY
-from feature.model.registry.surrogate_registry import SURROGATE_REGISTRY
 from feature.model.registry.layer_registry import LAYER_REGISTRY
 from feature.model.registry.neuron_registry import NEURON_REGISTRY
+from feature.model.registry.surrogate_registry import SURROGATE_REGISTRY
 
 
 class ModelValidator:
@@ -31,7 +32,6 @@ class ModelValidator:
     def _validate_layers(model_ir: ModelIR):
 
         for layer in model_ir.layers:
-
             if layer.type not in LAYER_REGISTRY:
                 raise ValueError(f"Unknown layer '{layer.type}'")
 
@@ -59,13 +59,32 @@ class ModelValidator:
         invalid = supplied_args - valid_args
 
         if invalid:
-            raise ValueError(f"Invalid params for layer " f"{layer.type}: {invalid}")
+            raise ValueError(f"Invalid params for layer {layer.type}: {invalid}")
 
     @staticmethod
     def _validate_neuron(neuron):
 
         if neuron.type not in NEURON_REGISTRY:
             raise ValueError(f"Unknown neuron '{neuron.type}'")
+
+        if neuron.type == "LIAF":
+            supplied_args = set(
+                neuron.model_dump(
+                    exclude_none=True,
+                    exclude={"type"},
+                ).keys()
+            )
+            valid_args = {
+                "tau",
+                "threshold_related",
+                "v_threshold",
+                "v_reset",
+                "detach_reset",
+            }
+            invalid = supplied_args - valid_args
+            if invalid:
+                raise ValueError(f"Invalid params for neuron {neuron.type}: {invalid}")
+            return
 
         neuron_cls = NEURON_REGISTRY[neuron.type]
 
@@ -83,4 +102,4 @@ class ModelValidator:
         invalid = supplied_args - valid_args
 
         if invalid:
-            raise ValueError(f"Invalid params for neuron " f"{neuron.type}: {invalid}")
+            raise ValueError(f"Invalid params for neuron {neuron.type}: {invalid}")

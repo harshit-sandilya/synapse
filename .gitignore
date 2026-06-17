@@ -7,3 +7,7 @@ __pycache__
 sj_exp/data/
 sj_exp/experiments/
 test/state.json
+benchmark/.data
+benchmark/results/**
+!benchmark/results/**/
+!benchmark/results/**/*.json

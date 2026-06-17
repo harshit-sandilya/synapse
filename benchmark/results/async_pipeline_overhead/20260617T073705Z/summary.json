@@ -1,0 +1,98 @@
+{
+  "benchmark": "async_pipeline_overhead",
+  "conditions": {
+    "async_reduced_redis": {
+      "mean_steps_per_second": 130.62961049460236,
+      "mean_wall_time_seconds": 0.3062667083528747,
+      "std_steps_per_second": 2.198483251079177,
+      "std_wall_time_seconds": 0.0051178334105428614,
+      "trials": [
+        {
+          "seed": 42,
+          "steps_per_second": 129.930420125461,
+          "trial": 1,
+          "wall_time_seconds": 0.30785708197799977
+        },
+        {
+          "seed": 43,
+          "steps_per_second": 133.09265741177794,
+          "trial": 2,
+          "wall_time_seconds": 0.3005425000737887
+        },
+        {
+          "seed": 44,
+          "steps_per_second": 128.86575394656813,
+          "trial": 3,
+          "wall_time_seconds": 0.3104005430068355
+        }
+      ]
+    },
+    "baseline": {
+      "mean_steps_per_second": 133.77917082434436,
+      "mean_wall_time_seconds": 0.29962984632099204,
+      "std_steps_per_second": 7.632785786633357,
+      "std_wall_time_seconds": 0.01655351233503172,
+      "trials": [
+        {
+          "seed": 42,
+          "steps_per_second": 129.10534958741957,
+          "trial": 1,
+          "wall_time_seconds": 0.3098244970315136
+        },
+        {
+          "seed": 43,
+          "steps_per_second": 142.58724556903516,
+          "trial": 2,
+          "wall_time_seconds": 0.2805300000036368
+        },
+        {
+          "seed": 44,
+          "steps_per_second": 129.6449173165784,
+          "trial": 3,
+          "wall_time_seconds": 0.30853504192782566
+        }
+      ]
+    },
+    "sync_full_tensor": {
+      "mean_steps_per_second": 22.36857627355245,
+      "mean_wall_time_seconds": 1.7889428599592065,
+      "std_steps_per_second": 0.548150919603634,
+      "std_wall_time_seconds": 0.0440741804242778,
+      "trials": [
+        {
+          "seed": 42,
+          "steps_per_second": 22.445901883041515,
+          "trial": 1,
+          "wall_time_seconds": 1.7820624989108182
+        },
+        {
+          "seed": 43,
+          "steps_per_second": 22.873958497505143,
+          "trial": 2,
+          "wall_time_seconds": 1.748713498993311
+        },
+        {
+          "seed": 44,
+          "steps_per_second": 21.785868440110686,
+          "trial": 3,
+          "wall_time_seconds": 1.8360525819734903
+        }
+      ]
+    }
+  },
+  "parameters": {
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "measured_steps": 40,
+    "seed": 42,
+    "test_samples": 256,
+    "timesteps": 16,
+    "train_samples": 2048,
+    "trials": 3,
+    "warmup_steps": 5
+  },
+  "retained_speed_pct": {
+    "async_reduced_vs_baseline": 97.64570201001061,
+    "sync_full_vs_baseline": 16.720522436876955
+  }
+}

@@ -1,12 +1,11 @@
-from spikingjelly.activation_based import neuron
-
+import torch.nn as nn
 from feature.model.registry.neuron_registry import (
     NEURON_REGISTRY,
 )
+from spikingjelly.activation_based import neuron
 
 
 class NeuronBuilder:
-
     @staticmethod
     def build(
         neuron_config,
@@ -28,5 +27,8 @@ class NeuronBuilder:
         if neuron_type == "PLIF":
             if "tau" in params:
                 params["init_tau"] = params.pop("tau")
+
+        if neuron_type == "LIAF":
+            params["act"] = nn.Identity()
 
         return neuron_cls(**params)
