@@ -6,19 +6,19 @@ Synapse is a full-stack neuromorphic ML system built as a production-style contr
 
 > Benchmarks are intentionally kept in-repo to show measured systems behavior, not just architecture claims.
 
-| Benchmark                         | Headline result                                                                                                           | Why it matters                                                                                                        | Source                                                                                                                                               |
-| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Async telemetry pipeline overhead | **97.65%** throughput retained versus no telemetry for reduced async Redis logging                                        | Shows observability can stay on the hot path without destroying training throughput                                   | [`benchmark/results/async_pipeline_overhead/20260617T073705Z/summary.json`](benchmark/results/async_pipeline_overhead/20260617T073705Z/summary.json) |
-| Event pipeline latency            | **Queue p95: 27.53 ms** and **transport-ready p50: 528.19 ms** at concurrency `1`                                         | Separates Redis queue latency from orchestration latency, which is the useful systems split for debugging bottlenecks | [`benchmark/results/event_pipeline_latency/20260617T090029Z/summary.json`](benchmark/results/event_pipeline_latency/20260617T090029Z/summary.json)   |
-| Failure detection speed           | Telemetry detects collapse **21 steps earlier on average** than conventional training signals                             | Demonstrates why internal layer telemetry is operationally useful, not just visually interesting                      | [`benchmark/results/failure_detection_speed/20260617T074103Z/summary.json`](benchmark/results/failure_detection_speed/20260617T074103Z/summary.json) |
-| Exhaustive graph correctness      | **147** runtime compatibility cases across every declared encoder, neuron, and layer family; current pass rate **28.57%** | Turns runtime correctness into an explicit engineering target and exposes unsupported graph paths early               | [`benchmark/results/graph_correctness/20260617T085321Z/summary.json`](benchmark/results/graph_correctness/20260617T085321Z/summary.json)             |
-| Telemetry storage reduction       | Hierarchical logging cuts telemetry size by **99.9639%** (**2770×** smaller than raw full-tensor logging)                 | Makes live telemetry practical without paying full-tensor storage costs                                               | [`benchmark/results/storage_reduction/20260617T073738Z/summary.json`](benchmark/results/storage_reduction/20260617T073738Z/summary.json)             |
+| Metric                               | Headline result                                                                                                           | Measurement notes                                                                                                                                                                                                                                                                                                                       | Source                                                                                                                                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Async telemetry throughput retention | **97.65%** retained throughput                                                                                            | Mean over **3 trials**. Baseline is **no telemetry at all**; reduced async Redis logging is compared against that baseline. For context, naive synchronous full-tensor logging retains only **16.72%** of baseline throughput, which is the stronger validation of the async design choice.                                             | [`benchmark/results/async_pipeline_overhead/20260617T073705Z/summary.json`](benchmark/results/async_pipeline_overhead/20260617T073705Z/summary.json) |
+| Event pipeline latency               | **Queue p95: 27.53 ms** and **transport-ready p50: 528.19 ms** at concurrency `1`                                         | Queue latency is measured independently from orchestration latency. The **528.19 ms** baseline transport-ready median is real and currently attributed to orchestration/startup overhead between training submission and the runtime callback becoming visible in transport; the exact internal breakdown is still under investigation. | [`benchmark/results/event_pipeline_latency/20260617T090029Z/summary.json`](benchmark/results/event_pipeline_latency/20260617T090029Z/summary.json)   |
+| Failure detection lead time          | Telemetry detects collapse **21 steps earlier on average**                                                                | Measured over **120-step runs** with collapse injected at **step 40**. Detection thresholds are fixed constants in the benchmark script, so this is best interpreted as a benchmarked heuristic rather than a universally calibrated production threshold.                                                                              | [`benchmark/results/failure_detection_speed/20260617T074103Z/summary.json`](benchmark/results/failure_detection_speed/20260617T074103Z/summary.json) |
+| Exhaustive graph correctness         | **147** runtime compatibility cases across every declared encoder, neuron, and layer family; current pass rate **85.71%** | After fixing latency-encoder dry-run initialization in the runtime builder, all encoder variants now build successfully; the only remaining systematic failure family in the saved run is explicitly unsupported `LIAF`.                                                                                                                | [`benchmark/results/graph_correctness/20260617T093232Z/summary.json`](benchmark/results/graph_correctness/20260617T093232Z/summary.json)             |
+| Telemetry storage reduction          | Hierarchical logging cuts telemetry size by **99.9639%** (**2770×** smaller than raw full-tensor logging)                 | Measured on the **same run**, with the **same model**, **same step count**, **same batch size**, and **same training pass** using a composite logger, so the comparison is apples-to-apples.                                                                                                                                            | [`benchmark/results/storage_reduction/20260617T073738Z/summary.json`](benchmark/results/storage_reduction/20260617T073738Z/summary.json)             |
 
 ## Architecture
 
 ```mermaid
 flowchart TD
-    U[User / Recruiter / ML Engineer] --> UI[Next.js IDE<br/>synapse-ui]
+    U[ML Engineer] --> UI[Next.js IDE<br/>synapse-ui]
     UI --> T[Transport Service<br/>Spring Boot]
 
     T --> PG[(PostgreSQL<br/>metadata + experiment state)]
@@ -70,6 +70,71 @@ The benchmark harness under `benchmark/` is part of the project story, not an af
 | [`benchmark/graph_correctness.py`](benchmark/graph_correctness.py)             | Exhaustively exercises declared encoder, neuron, and layer combinations against the runtime |
 | [`benchmark/storage_reduction.py`](benchmark/storage_reduction.py)             | Quantifies the storage savings of hierarchical reduced telemetry versus raw tensor logging  |
 
+### How to interpret the benchmark numbers
+
+#### 1) Async telemetry throughput retention
+
+The async telemetry benchmark runs **3 trials** and reports the **mean steps/second** for each condition. The headline **97.65% throughput retained** means:
+
+- baseline = **no telemetry at all**
+- measured condition = **reduced async Redis logging**
+- comparison metric = mean training throughput over 3 trials
+
+That already shows the observability path is cheap. But the more interview-interesting comparison is against the naive alternative: **synchronous full-tensor logging** retains only **16.72%** of baseline throughput. That contrast is what validates the design decision to reduce telemetry and ship it asynchronously.
+
+#### 2) Event pipeline latency
+
+This benchmark intentionally separates two different things:
+
+- **transport-ready latency**: time from training submission until transport exposes telemetry publisher metadata
+- **queue latency**: time from runtime emission to observation in Redis
+
+That split matters because it avoids blaming Redis for orchestration costs. In the saved result:
+
+- queue latency is low (`p95 = 27.53 ms` at concurrency 1)
+- transport-ready latency is much larger (`p50 = 528.19 ms` at concurrency 1)
+
+The half-second median is real. The benchmark shows it is **not** primarily a Redis live-telemetry problem. It is better explained as orchestration/startup overhead between job submission and runtime/transport synchronization becoming visible. The exact internal source—queue pickup delay, runtime context build, synchronous callback path, Spring/JPA overhead, or a combination—is **still under investigation**, and that is the honest current status.
+
+At concurrency `3`, transport-ready latency grows sharply because the current runtime architecture is still effectively **single-worker / sequential**. That makes the benchmark useful not just as a measurement artifact but as a roadmap signal.
+
+#### 3) Failure detection lead time
+
+The failure detection benchmark runs for **120 total steps** and injects collapse at **step 40** by forcing a pathological neuron-threshold setting. The tracked result is that telemetry-based heuristics detect failure **21 steps earlier on average** than conventional loss/accuracy degradation.
+
+Important caveat: the telemetry thresholds are currently fixed benchmark constants in the script:
+
+- `dead_neuron_ratio >= 0.80`
+- `firing_rate <= 0.01`
+- `3` consecutive telemetry steps
+
+and the conventional baseline uses its own fixed degradation thresholds. So the result is interview-defensible as a **benchmark demonstrating earlier observability**, but not yet positioned as a universally tuned production detector.
+
+#### 4) Exhaustive graph correctness
+
+The graph-correctness benchmark is intentionally harsh: it enumerates every declared encoder, neuron, and layer family in the runtime surface and tries to parse, validate, build, sanity-check, and backpropagate through them.
+
+The graph-correctness benchmark originally exposed two dominant issues:
+
+- **all latency encoder cases were failing during runtime builder dry-run**, because the builder used `torch.randn(...)` dummy inputs, which violate latency encoder expectations for non-negative normalized inputs
+- **all `LIAF` cases were failing at runtime**, because the neuron is declared in the IR surface but does not actually survive the current execution path cleanly
+
+Those findings now have direct runtime fixes and clearer behavior:
+
+- the runtime builder uses non-negative dry-run input for `latency` encoders
+- `LIAF` is rejected explicitly by validation with a clear message instead of crashing deep inside runtime execution
+
+The updated saved run shows the effect of that change: **126 / 147 cases pass (85.71%)**, with the remaining **21 failures entirely attributable to `LIAF`**. That is a much better interview story than silently claiming broader support than the runtime truly provides.
+
+#### 5) Telemetry storage reduction
+
+The storage reduction benchmark is an apples-to-apples comparison. It uses the **same training pass** with a composite logger that writes:
+
+- full raw tensor telemetry
+- hierarchical reduced telemetry
+
+for the **same model**, **same batch size**, **same step count**, and **same run**. That is why the `2770×` size reduction figure is credible rather than marketing math.
+
 ### Current engineering signal from the benchmarks
 
 The benchmarks do more than produce pretty numbers—they identify where the system is strong and where it still needs work:
@@ -77,10 +142,10 @@ The benchmarks do more than produce pretty numbers—they identify where the sys
 - **Strong**: async reduced telemetry keeps nearly all baseline throughput.
 - **Strong**: Redis queue latency is low and stable in the measured single-run path.
 - **Strong**: hierarchical telemetry logging makes storage overhead almost negligible.
-- **Useful pressure test**: graph correctness currently surfaces real runtime gaps, especially around some declared encoder/neuron paths.
+- **Improved runtime behavior**: latency encoder builds now avoid false-negative initialization failures in the runtime dry-run path.
+- **Measured correctness improvement**: the exhaustive graph benchmark now passes **126 / 147** cases, and every remaining failure belongs to the explicitly unsupported `LIAF` family.
+- **More honest runtime surface**: `LIAF` is now rejected explicitly during validation rather than failing opaquely inside execution.
 - **Useful pressure test**: transport-ready latency degrades sharply under concurrent runs, which points to an orchestration/startup bottleneck rather than a Redis telemetry bottleneck.
-
-That last point is exactly why the latency benchmark is split into **transport latency** and **queue latency** instead of reporting one opaque number.
 
 ## Repository layout
 

@@ -37,8 +37,9 @@ class ModelValidator:
 
             ModelValidator._validate_layer_params(layer)
 
-            if getattr(layer, "neuron", None) is not None:
-                ModelValidator._validate_neuron(layer.neuron)
+            neuron = getattr(layer, "neuron", None)
+            if neuron is not None:
+                ModelValidator._validate_neuron(neuron)
 
     @staticmethod
     def _validate_layer_params(layer):
@@ -84,7 +85,10 @@ class ModelValidator:
             invalid = supplied_args - valid_args
             if invalid:
                 raise ValueError(f"Invalid params for neuron {neuron.type}: {invalid}")
-            return
+            raise ValueError(
+                "Neuron 'LIAF' is declared in the IR but is not currently supported by "
+                "the runtime execution path; use IF/LIF/PLIF/EIF/KLIF/QIF instead."
+            )
 
         neuron_cls = NEURON_REGISTRY[neuron.type]
 

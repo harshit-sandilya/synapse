@@ -36,7 +36,12 @@ class SynapseModelBuilder:
             timesteps=model_ir.simulation.timesteps,
         )
 
-        self._dry_run(model, batch_size, shape[1:])
+        self._dry_run(
+            model,
+            batch_size,
+            shape[1:],
+            encoder_type=model_ir.encoder.type,
+        )
         model.output_shape = current_shape
         return model
 
@@ -238,8 +243,13 @@ class SynapseModelBuilder:
         model,
         batch_size,
         data_shape,
+        *,
+        encoder_type: str,
     ):
-        dummy = torch.randn(batch_size, *data_shape)
+        if encoder_type == "latency":
+            dummy = torch.rand(batch_size, *data_shape)
+        else:
+            dummy = torch.randn(batch_size, *data_shape)
 
         with torch.no_grad():
             model(dummy)
